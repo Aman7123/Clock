@@ -1,0 +1,70 @@
+package desktopClock;
+
+import java.awt.Point;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+public class Helper {
+	
+	public static String gettime() {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat(ReadXMLFile.readConfig("timeformat"));
+        return sdf.format(cal.getTime());
+	}
+	
+	public static String getdate() {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat(ReadXMLFile.readConfig("dateformat"));
+        return sdf.format(cal.getTime());
+	}
+	
+	public static void checkconfig() {
+		if(!new File("ClockConfig.xml").exists()) {
+			WriteXMLFile.createConfig();
+			System.out.println("Config not found - Creating one");
+		} 
+	}
+	
+	public static void savePoints() {
+		Point test = Time.dialog.getLocation();
+		double x = test.getY();
+		double y = test.getY();
+		int pox = (int)x;
+		int poy = (int)y;
+		System.out.println(pox + ", " + poy);
+		try {
+			PrintWriter out = new PrintWriter("lastloc.txt");
+			out.println(pox);
+			out.println(poy);
+			out.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void loadlastloc() throws FileNotFoundException, IOException {
+		String finx = null;
+		String finy = null;
+		try(BufferedReader br = new BufferedReader(new FileReader("lastloc.txt"))) {
+		    for(String line; (line = br.readLine()) != null; ) {
+		    	if(finy==null) {
+		    		finy = line;
+		    	} else if(finx==null) {
+		    		finx = line;
+		    	}
+		    }
+		    int lastx = Integer.parseInt(finx);
+		    int lasty = Integer.parseInt(finy);
+		    System.out.println(lastx+", "+lasty);
+		} catch (FileNotFoundException e){
+			Time.dialog.setLocation(0, 0);
+		}
+	}
+
+}
