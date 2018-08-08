@@ -7,7 +7,9 @@ My clock application has the following features:
   * A XML file generator and parser that lets your preferances be saved.
   * Carful attention to detail including the promise that on the last second of the year if the clock is open the year will properly update.
   * An auto-update feature if I every update this in the future.
+  <p>
 IMPORTANT!! :
+ </p>
   * An IP and computer spec collector that is logged to my database. HOWEVER the server nor that ip address are in my possession anymore.
 
 Dependencies
